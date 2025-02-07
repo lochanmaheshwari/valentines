@@ -80,82 +80,87 @@
        ------------------------------------------------------------------------- */
     #valentine-screen {
       display: none;
-      position: relative;
-      width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: #000; /* Background behind photos */
+      background: #000;
+      display: flex;
+      flex-direction: column;
     }
-    /* Moving Photos Section */
+    /* Top half for photos */
+    #top-half {
+      position: relative;
+      height: 50vh;
+      overflow: hidden;
+    }
+    /* Floating Photos Container */
     #wire-photos {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Allows clicking through photos */
+      pointer-events: none;
     }
-    .wire-image {
-      position: absolute;
-      height: 250px; /* Larger than before */
-      width: auto;
-      object-fit: cover;
-      border-radius: 10px;
-      animation: floatCurve 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      opacity: 0;
-    }
-    @keyframes floatCurve {
+    /* Straight horizontal animation keyframes */
+    @keyframes floatStraight {
       0% {
-        transform: translateX(110vw) translateY(0) rotate(-5deg);
+        transform: translateX(110vw);
         opacity: 0;
       }
-      20% {
-        transform: translateX(82vw) translateY(-40px) rotate(0deg);
+      10% {
         opacity: 1;
       }
-      40% {
-        transform: translateX(55vw) translateY(20px) rotate(5deg);
-      }
-      60% {
-        transform: translateX(28vw) translateY(-30px) rotate(-3deg);
-      }
-      80% {
-        transform: translateX(0vw) translateY(10px) rotate(2deg);
+      90% {
         opacity: 1;
       }
       100% {
-        transform: translateX(-110vw) translateY(0) rotate(-5deg);
+        transform: translateX(-110vw);
         opacity: 0;
       }
     }
-    /* Staggering each image's vertical position and animation delay */
-    .wire-image:nth-child(1) { top: 10%; animation-delay: 0s; }
-    .wire-image:nth-child(2) { top: 20%; animation-delay: 3s; }
-    .wire-image:nth-child(3) { top: 30%; animation-delay: 1.5s; }
-    .wire-image:nth-child(4) { top: 40%; animation-delay: 4.5s; }
-    .wire-image:nth-child(5) { top: 50%; animation-delay: 6s; }
-    .wire-image:nth-child(6) { top: 60%; animation-delay: 2.5s; }
-    .wire-image:nth-child(7) { top: 70%; animation-delay: 7.5s; }
-    .wire-image:nth-child(8) { top: 80%; animation-delay: 9s; }
-    .wire-image:nth-child(9) { top: 90%; animation-delay: 10.5s; }
-    /* Overlay for meal questions */
-    #question-container {
+    .wire-image {
       position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-      background: rgba(255, 255, 255, 0.5); /* Less opaque */
-      padding: 15px;
+      /* Center vertically within the top-half */
+      top: 50%;
+      transform: translateY(-50%);
+      height: 250px;
+      width: auto;
+      object-fit: cover;
+      border-radius: 10px;
+      animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 0;
+    }
+    /* Stagger animation delays for each image */
+    .wire-image:nth-child(1) { animation-delay: 0s; }
+    .wire-image:nth-child(2) { animation-delay: 3s; }
+    .wire-image:nth-child(3) { animation-delay: 1.5s; }
+    .wire-image:nth-child(4) { animation-delay: 4.5s; }
+    .wire-image:nth-child(5) { animation-delay: 6s; }
+    .wire-image:nth-child(6) { animation-delay: 2.5s; }
+    .wire-image:nth-child(7) { animation-delay: 7.5s; }
+    .wire-image:nth-child(8) { animation-delay: 9s; }
+    .wire-image:nth-child(9) { animation-delay: 10.5s; }
+    
+    /* Bottom half for questions */
+    #bottom-half {
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Reduced Question Container */
+    #question-container {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
       border-radius: 10px;
       width: 90%;
-      max-width: 500px;
+      max-width: 300px;
       text-align: center;
     }
     #question-container h2 {
       color: #d6336c;
-      margin-bottom: 15px;
-      font-size: 18px;
+      margin-bottom: 10px;
+      font-size: 16px;
     }
     .question {
       display: none;
@@ -163,15 +168,23 @@
     .question.active {
       display: block;
     }
+    /* Options container to arrange buttons responsively */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    /* Meal Option Buttons */
     .meal-option {
-      display: block;
-      margin: 8px auto;
+      flex: 1 1 45%;
+      max-width: 45%;
       padding: 8px;
       background: #f9c2c2;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: 80%;
       font-size: 16px;
       transition: background 0.3s;
     }
@@ -182,7 +195,7 @@
       display: block;
       margin: 12px auto;
       padding: 8px;
-      width: 80%;
+      width: 90%;
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -197,28 +210,27 @@
         font-size: 16px;
         padding: 8px 16px;
       }
-      #question-container {
-        width: 95%;
-        padding: 10px;
-      }
-      #question-container h2 {
-        font-size: 16px;
-      }
-      .meal-option {
-        font-size: 14px;
-        padding: 6px;
-      }
-      .wire-image {
-        height: 200px;
-      }
-      .meal-input { font-size: 14px; }
-      #video-text { font-size: 18px; }
-      /* Force the video to be smaller on mobile */
       #valentine-video {
         width: 300px !important;
         max-width: 300px !important;
         height: auto;
       }
+      /* Adjust question container */
+      #question-container {
+        max-width: 250px;
+        padding: 8px;
+      }
+      #question-container h2 {
+        font-size: 14px;
+      }
+      .meal-option {
+        flex: 1 1 100%;
+        max-width: 100%;
+        font-size: 14px;
+        padding: 6px;
+      }
+      .meal-input { font-size: 14px; }
+      .wire-image { height: 200px; }
     }
   </style>
 </head>
@@ -237,70 +249,75 @@
   <!-- VIDEO SCREEN: Plays after "Yes" -->
   <div id="video-screen">
     <div id="video-text">yaaayyyy 🤗🤗😍❤️</div>
-    <video id="valentine-video" autoplay muted playsinline>
+    <video id="valentine-video" autoplay loop playsinline>
       <source src="usvideo.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <button id="next-button" class="btn">Please click next my queen</button>
   </div>
 
-  <!-- SECOND SCREEN: Valentine Screen with moving photos & meal questions -->
+  <!-- SECOND SCREEN: Valentine Screen with photos on top & questions on bottom -->
   <div id="valentine-screen">
-    <!-- Floating Photos -->
-    <div id="wire-photos">
-      <img src="us1.png" alt="Photo 1" class="wire-image">
-      <img src="us2.png" alt="Photo 2" class="wire-image">
-      <img src="us3.png" alt="Photo 3" class="wire-image">
-      <img src="us4.png" alt="Photo 4" class="wire-image">
-      <img src="us5.png" alt="Photo 5" class="wire-image">
-      <img src="us6.png" alt="Photo 6" class="wire-image">
-      <img src="us7.png" alt="Photo 7" class="wire-image">
-      <img src="us8.png" alt="Photo 8" class="wire-image">
-      <img src="us9.png" alt="Photo 9" class="wire-image">
+    <div id="top-half">
+      <div id="wire-photos">
+        <img src="us1.png" alt="Photo 1" class="wire-image">
+        <img src="us2.png" alt="Photo 2" class="wire-image">
+        <img src="us3.png" alt="Photo 3" class="wire-image">
+        <img src="us4.png" alt="Photo 4" class="wire-image">
+        <img src="us5.png" alt="Photo 5" class="wire-image">
+        <img src="us6.png" alt="Photo 6" class="wire-image">
+        <img src="us7.png" alt="Photo 7" class="wire-image">
+        <img src="us8.png" alt="Photo 8" class="wire-image">
+        <img src="us9.png" alt="Photo 9" class="wire-image">
+      </div>
     </div>
-    <!-- Meal Question Container -->
-    <div id="question-container">
-      <!-- Breakfast Question (shown first) -->
-      <div id="breakfast-question" class="question active">
-        <h2>Where do you want to go for breakfast on 9th morning?</h2>
-        <button class="meal-option" data-meal="Breakfast" data-place="Roys">Roys</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Eye of the Tiger">Eye of the Tiger</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Bachuss In">Bachuss In</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Egg Factory">Egg Factory</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Mill">Mill</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Dollops">Dollops</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Kyoto">Kyoto</button>
-        <button class="meal-option" data-meal="Breakfast" data-place="Veetos">Veetos</button>
-        <!-- Custom option input -->
-        <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Breakfast">
-      </div>
-      <!-- Lunch Question (appears after breakfast is chosen) -->
-      <div id="lunch-question" class="question">
-        <h2>Where do you want to go for lunch on 9th?</h2>
-        <button class="meal-option" data-meal="Lunch" data-place="Roys">Roys</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Eye of the Tiger">Eye of the Tiger</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Bachuss In">Bachuss In</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Egg Factory">Egg Factory</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Mill">Mill</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Dollops">Dollops</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Kyoto">Kyoto</button>
-        <button class="meal-option" data-meal="Lunch" data-place="Veetos">Veetos</button>
-        <!-- Custom option input -->
-        <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Lunch">
-      </div>
-      <!-- Dinner Question (appears after lunch is chosen) -->
-      <div id="dinner-question" class="question">
-        <h2>Where do you want to go for dinner on 9th?</h2>
-        <button class="meal-option" data-meal="Dinner" data-place="Roys">Roys</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Eye of the Tiger">Eye of the Tiger</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Bachuss In">Bachuss In</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Egg Factory">Egg Factory</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Mill">Mill</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Dollops">Dollops</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Kyoto">Kyoto</button>
-        <button class="meal-option" data-meal="Dinner" data-place="Veetos">Veetos</button>
-        <!-- Custom option input -->
-        <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Dinner">
+    <div id="bottom-half">
+      <div id="question-container">
+        <!-- Breakfast Question -->
+        <div id="breakfast-question" class="question active">
+          <h2>Where do you want to go for breakfast on 9th morning?</h2>
+          <div class="options">
+            <button class="meal-option" data-meal="Breakfast" data-place="Roys">Roys</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Eye of the Tiger">Eye of the Tiger</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Bachuss In">Bachuss In</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Egg Factory">Egg Factory</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Mill">Mill</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Dollops">Dollops</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Kyoto">Kyoto</button>
+            <button class="meal-option" data-meal="Breakfast" data-place="Veetos">Veetos</button>
+          </div>
+          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Breakfast">
+        </div>
+        <!-- Lunch Question -->
+        <div id="lunch-question" class="question">
+          <h2>Where do you want to go for lunch on 9th?</h2>
+          <div class="options">
+            <button class="meal-option" data-meal="Lunch" data-place="Roys">Roys</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Eye of the Tiger">Eye of the Tiger</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Bachuss In">Bachuss In</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Egg Factory">Egg Factory</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Mill">Mill</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Dollops">Dollops</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Kyoto">Kyoto</button>
+            <button class="meal-option" data-meal="Lunch" data-place="Veetos">Veetos</button>
+          </div>
+          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Lunch">
+        </div>
+        <!-- Dinner Question -->
+        <div id="dinner-question" class="question">
+          <h2>Where do you want to go for dinner on 9th?</h2>
+          <div class="options">
+            <button class="meal-option" data-meal="Dinner" data-place="Roys">Roys</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Eye of the Tiger">Eye of the Tiger</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Bachuss In">Bachuss In</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Egg Factory">Egg Factory</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Mill">Mill</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Dollops">Dollops</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Kyoto">Kyoto</button>
+            <button class="meal-option" data-meal="Dinner" data-place="Veetos">Veetos</button>
+          </div>
+          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Dinner">
+        </div>
       </div>
     </div>
   </div>
@@ -344,7 +361,7 @@
       // When "Next" is clicked on the video screen, move to the Valentine screen
       nextButton.addEventListener("click", function () {
         videoScreen.style.display = "none";
-        valentineScreen.style.display = "block";
+        valentineScreen.style.display = "flex";
       });
       
       // Handle meal option button selections
