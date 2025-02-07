@@ -85,12 +85,12 @@
     
     /* ----------------------- */
     /* QUESTION SCREENS        */
-    /* Each question screen fills the viewport and is divided vertically into:
-         - Top-half: Floating photos (50% of the viewport)
-         - Bottom-half: Meal question and options (50% of the viewport)
+    /* Each question screen fills the viewport and is divided into two halves:
+         - Top-half: Floating photos (50% height)
+         - Bottom-half: Question text, options, and custom input (50% height)
     */
     .question-screen {
-      display: none; /* Hide by default */
+      display: none;
       height: 100vh;
       width: 100vw;
       background: #000;
@@ -126,7 +126,7 @@
       animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       opacity: 0;
     }
-    /* Stagger animation delays */
+    /* Stagger delays for 9 images */
     .wire-image:nth-child(1) { animation-delay: 0s; }
     .wire-image:nth-child(2) { animation-delay: 3s; }
     .wire-image:nth-child(3) { animation-delay: 6s; }
@@ -307,6 +307,63 @@
     </div>
   </div>
   
+  <!-- GIFT QUESTION SCREEN -->
+  <div id="gift-screen" class="question-screen">
+    <div class="top-half">
+      <div class="wire-photos">
+        <img src="us1.png" alt="Photo 1" class="wire-image">
+        <img src="us2.png" alt="Photo 2" class="wire-image">
+        <img src="us3.png" alt="Photo 3" class="wire-image">
+        <img src="us4.png" alt="Photo 4" class="wire-image">
+        <img src="us5.png" alt="Photo 5" class="wire-image">
+        <img src="us6.png" alt="Photo 6" class="wire-image">
+        <img src="us7.png" alt="Photo 7" class="wire-image">
+        <img src="us8.png" alt="Photo 8" class="wire-image">
+        <img src="us9.png" alt="Photo 9" class="wire-image">
+      </div>
+    </div>
+    <div class="bottom-half">
+      <div class="question-text">What do you want for Valentines?</div>
+      <div class="options">
+        <button class="meal-option" data-meal="Gift" data-place="Jewellery">Jewellery</button>
+        <button class="meal-option" data-meal="Gift" data-place="Dresses">Dresses</button>
+        <button class="meal-option" data-meal="Gift" data-place="Makeup">Makeup</button>
+        <button class="meal-option" data-meal="Gift" data-place="Skincare">Skincare</button>
+        <button class="meal-option" data-meal="Gift" data-place="A Kit of All">A Kit of All</button>
+        
+      </div>
+      <input type="text" class="meal-input" placeholder="Other?" data-meal="Gift">
+    </div>
+  </div>
+  
+  <!-- OUTFIT QUESTION SCREEN -->
+  <div id="outfit-screen" class="question-screen">
+    <div class="top-half">
+      <div class="wire-photos">
+        <img src="us1.png" alt="Photo 1" class="wire-image">
+        <img src="us2.png" alt="Photo 2" class="wire-image">
+        <img src="us3.png" alt="Photo 3" class="wire-image">
+        <img src="us4.png" alt="Photo 4" class="wire-image">
+        <img src="us5.png" alt="Photo 5" class="wire-image">
+        <img src="us6.png" alt="Photo 6" class="wire-image">
+        <img src="us7.png" alt="Photo 7" class="wire-image">
+        <img src="us8.png" alt="Photo 8" class="wire-image">
+        <img src="us9.png" alt="Photo 9" class="wire-image">
+      </div>
+    </div>
+    <div class="bottom-half">
+      <div class="question-text">What should I wear on 9th?</div>
+      <div class="options">
+        <button class="meal-option" data-meal="Outfit" data-place="Black shirt with cargo">Black shirt with cargo</button>
+        <button class="meal-option" data-meal="Outfit" data-place="Oversized black tshirt with cargo">Oversized black tshirt with cargo</button>
+        <button class="meal-option" data-meal="Outfit" data-place="Black polo">Black polo</button>
+        <button class="meal-option" data-meal="Outfit" data-place="Half shirt with cargo">Half shirt with cargo</button>
+        
+      </div>
+      <input type="text" class="meal-input" placeholder="Other?" data-meal="Outfit">
+    </div>
+  </div>
+  
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Get screen elements
@@ -315,16 +372,20 @@
       const breakfastScreen = document.getElementById("breakfast-screen");
       const lunchScreen = document.getElementById("lunch-screen");
       const dinnerScreen = document.getElementById("dinner-screen");
+      const giftScreen = document.getElementById("gift-screen");
+      const outfitScreen = document.getElementById("outfit-screen");
       
       const yesButton = document.getElementById("yes-button");
       const noButton = document.getElementById("no-button");
       const nextButton = document.getElementById("next-button");
       
-      // Object to store meal selections
+      // Object to store selections (including new questions)
       let mealResponses = {
         Breakfast: "",
         Lunch: "",
-        Dinner: ""
+        Dinner: "",
+        Gift: "",
+        Outfit: ""
       };
       
       // Function to move the "No" button randomly
@@ -353,38 +414,37 @@
         breakfastScreen.style.display = "flex";
       });
       
-      // Helper function to set up a question screen’s actions
-      function setupQuestionScreen(screen, mealType, nextScreen) {
-        // Handle option button clicks
+      // Helper function to set up a question screen's actions.
+      // When an option is clicked or a custom answer entered, the screen hides
+      // and if a nextScreen is provided, that screen is shown; otherwise, WhatsApp opens.
+      function setupQuestionScreen(screen, key, nextScreen) {
         const mealOptions = screen.querySelectorAll(".meal-option");
         mealOptions.forEach(function(btn) {
           btn.addEventListener("click", function () {
             const place = this.getAttribute("data-place");
-            mealResponses[mealType] = place;
+            mealResponses[key] = place;
             screen.style.display = "none";
             if (nextScreen) {
               nextScreen.style.display = "flex";
             } else {
-              // All questions answered; open WhatsApp automatically
-              const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}`;
+              const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}, Gift: ${mealResponses.Gift}, Outfit: ${mealResponses.Outfit}`;
               const whatsappURL = "https://api.whatsapp.com/send?phone=917062339465&text=" + encodeURIComponent(message);
               window.open(whatsappURL, "_blank");
             }
           });
         });
-        // Handle custom input (on Enter key)
         const mealInput = screen.querySelector(".meal-input");
         mealInput.addEventListener("keydown", function(event) {
           if (event.key === "Enter") {
             const customPlace = this.value.trim();
             if (customPlace !== "") {
-              mealResponses[mealType] = customPlace;
+              mealResponses[key] = customPlace;
               this.value = "";
               screen.style.display = "none";
               if (nextScreen) {
                 nextScreen.style.display = "flex";
               } else {
-                const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}`;
+                const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}, Gift: ${mealResponses.Gift}, Outfit: ${mealResponses.Outfit}`;
                 const whatsappURL = "https://api.whatsapp.com/send?phone=917062339465&text=" + encodeURIComponent(message);
                 window.open(whatsappURL, "_blank");
               }
@@ -393,10 +453,12 @@
         });
       }
       
-      // Set up each question screen sequentially
+      // Set up the screens sequentially.
       setupQuestionScreen(breakfastScreen, "Breakfast", lunchScreen);
       setupQuestionScreen(lunchScreen, "Lunch", dinnerScreen);
-      setupQuestionScreen(dinnerScreen, "Dinner", null);
+      setupQuestionScreen(dinnerScreen, "Dinner", giftScreen);
+      setupQuestionScreen(giftScreen, "Gift", outfitScreen);
+      setupQuestionScreen(outfitScreen, "Outfit", null);
     });
   </script>
 </body>
