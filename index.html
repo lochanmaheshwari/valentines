@@ -67,19 +67,19 @@
       color: #d6336c;
       margin-bottom: 20px;
     }
-    /* Video is now fixed to 250px width on all screens */
+    /* Video now fixed to 250px width and preloaded */
     #valentine-video {
       width: 250px;
       max-width: 250px;
       border-radius: 10px;
       display: block;
       margin: 20px auto;
+      preload: auto;
     }
     
     /* -------------------------------------------------------------------------
        SECOND SCREEN: Valentine Screen with moving photos & meal questions
        ------------------------------------------------------------------------- */
-    /* Use flex layout to divide the screen into two halves */
     #valentine-screen {
       display: none;
       height: 100vh;
@@ -89,7 +89,7 @@
     /* Top half for photos */
     #top-half {
       position: relative;
-      height: 50vh;
+      height: 50vh; /* Desktop: top half is 50% of viewport height */
       overflow: hidden;
     }
     /* Floating Photos Container */
@@ -120,7 +120,7 @@
     }
     .wire-image {
       position: absolute;
-      /* On desktop, center vertically within top-half */
+      /* Desktop: Center vertically in the top half */
       top: 50%;
       transform: translateY(-50%);
       height: 250px;
@@ -130,7 +130,7 @@
       animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       opacity: 0;
     }
-    /* Stagger animation delays for each image */
+    /* Stagger animation delays */
     .wire-image:nth-child(1) { animation-delay: 0s; }
     .wire-image:nth-child(2) { animation-delay: 3s; }
     .wire-image:nth-child(3) { animation-delay: 1.5s; }
@@ -168,7 +168,7 @@
     .question.active {
       display: block;
     }
-    /* Options container to arrange buttons responsively */
+    /* Options container */
     .options {
       display: flex;
       flex-wrap: wrap;
@@ -209,16 +209,23 @@
         font-size: 16px;
         padding: 8px 16px;
       }
-      /* Ensure video remains 250px on mobile as well */
+      /* Ensure video remains at 250px */
       #valentine-video {
         width: 250px !important;
         max-width: 250px !important;
       }
-      /* On mobile, make the moving photos fill the entire top-half */
+      /* On mobile, make top half bigger (60vh) and bottom half smaller (40vh) */
+      #top-half {
+        height: 60vh;
+      }
+      #bottom-half {
+        height: 40vh;
+      }
+      /* On mobile, make moving photos fill the container */
       .wire-image {
-        height: 50vh;
-        top: 0;         /* Position at the very top */
-        transform: none; /* Remove vertical centering */
+        height: 100%;
+        top: 0;
+        transform: none;
       }
       /* Adjust question container */
       #question-container {
@@ -250,10 +257,10 @@
     </div>
   </div>
 
-  <!-- VIDEO SCREEN: Plays after "Yes" -->
+  <!-- VIDEO SCREEN: Plays after "Yes" is clicked -->
   <div id="video-screen">
     <div id="video-text">yaaayyyy 🤗🤗😍❤️</div>
-    <video id="valentine-video" autoplay loop playsinline>
+    <video id="valentine-video" autoplay loop playsinline preload="auto">
       <source src="usvideo.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -422,3 +429,4 @@
   </script>
 </body>
 </html>
+z
