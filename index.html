@@ -9,15 +9,16 @@
     *, *::before, *::after {
       box-sizing: border-box;
     }
-    body {
-      overflow-x: hidden;
-    }
     html, body {
       height: 100%;
       margin: 0;
       font-family: Arial, sans-serif;
+      overflow-x: hidden;
     }
-    /* Buttons */
+    
+    /* ----------------------- */
+    /* COMMON BUTTON STYLES   */
+    /* ----------------------- */
     .btn {
       padding: 10px 20px;
       font-size: 18px;
@@ -32,9 +33,10 @@
     .btn:hover {
       background-color: #ff4f4f;
     }
-    /* -------------------------------------------------------------------------
-       FIRST SCREEN: "Will you be my Valentine?"
-       ------------------------------------------------------------------------- */
+    
+    /* ----------------------- */
+    /* MAIN SCREEN (Start)    */
+    /* ----------------------- */
     #main-section {
       display: flex;
       flex-direction: column;
@@ -52,13 +54,14 @@
       border-radius: 20px;
       margin-bottom: 20px;
     }
-    /* "No" button moves randomly on hover/touch */
+    /* Randomly move the "No" button on hover/touch */
     #no-button {
       position: relative;
     }
-    /* -------------------------------------------------------------------------
-       VIDEO SCREEN: Plays video after "Yes" is clicked
-       ------------------------------------------------------------------------- */
+    
+    /* ----------------------- */
+    /* VIDEO SCREEN           */
+    /* ----------------------- */
     #video-screen {
       display: none;
       height: 100vh;
@@ -72,7 +75,7 @@
       color: #d6336c;
       margin-bottom: 20px;
     }
-    /* Video fixed to 250px width */
+    /* Video fixed at 250px width */
     #valentine-video {
       width: 250px;
       max-width: 250px;
@@ -80,19 +83,25 @@
       display: block;
       margin: 20px auto;
     }
-    /* -------------------------------------------------------------------------
-       SECOND SCREEN: Valentine Screen with photos on top & meal questions on bottom
-       ------------------------------------------------------------------------- */
+    
+    /* ----------------------- */
+    /* QUESTION SCREEN        */
+    /* ----------------------- */
+    /* The screen is divided vertically into two halves:
+       - Top-half: floating photos fill 50% of the viewport.
+       - Bottom-half: question container fills the other 50%.
+    */
     #valentine-screen {
       display: none;
       height: 100vh;
       background: #000;
+      display: flex;
       flex-direction: column;
     }
     /* Top half for photos */
     #top-half {
       position: relative;
-      height: 50vh;  /* Desktop: top half is 50% of viewport height */
+      height: 50vh;  /* 50% of viewport height */
       overflow: hidden;
     }
     /* Floating Photos Container */
@@ -104,7 +113,7 @@
       height: 100%;
       pointer-events: none;
     }
-    /* Straight horizontal animation keyframes */
+    /* Straight horizontal animation for photos */
     @keyframes floatStraight {
       0% {
         transform: translateX(110vw);
@@ -123,15 +132,15 @@
     }
     .wire-image {
       position: absolute;
-      /* On desktop, let the image fill the container’s height */
+      /* On desktop, fill the top-half container completely */
       height: 100%;
       width: auto;
-      object-fit: contain;
+      object-fit: cover;
       border-radius: 10px;
       animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       opacity: 0;
     }
-    /* Stagger animation delays */
+    /* Stagger animation delays for each image */
     .wire-image:nth-child(1) { animation-delay: 0s; }
     .wire-image:nth-child(2) { animation-delay: 3s; }
     .wire-image:nth-child(3) { animation-delay: 4s; }
@@ -141,99 +150,101 @@
     .wire-image:nth-child(7) { animation-delay: 8s; }
     .wire-image:nth-child(8) { animation-delay: 9s; }
     .wire-image:nth-child(9) { animation-delay: 10s; }
+    
     /* Bottom half for questions */
     #bottom-half {
       height: 50vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    /* Reduced Question Container */
-    #question-container {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 10px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 300px;
-      text-align: center;
-    }
-    #question-container h2 {
+      background: #fff;
       color: #d6336c;
-      margin-bottom: 10px;
+      overflow-y: auto; /* Should fit on screen without scrolling on most devices */
+      padding: 5px;
+    }
+    /* Question container holds all meal sections */
+    #question-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .meal-section {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 5px;
+      background: rgba(255,255,255,0.8);
+    }
+    .meal-section h3 {
+      margin: 5px 0;
       font-size: 16px;
     }
-    .question {
-      display: none;
-    }
-    .question.active {
-      display: block;
-    }
-    /* Options container */
     .options {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 5px;
-      margin-bottom: 10px;
     }
     .meal-option {
       flex: 1 1 45%;
       max-width: 45%;
-      padding: 8px;
+      padding: 6px;
       background: #f9c2c2;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       transition: background 0.3s;
     }
     .meal-option:hover {
       background: #f08e8e;
     }
     .meal-input {
-      display: block;
-      margin: 12px auto;
-      padding: 8px;
+      margin: 5px auto;
+      padding: 6px;
       width: 90%;
-      font-size: 16px;
+      font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    /* ----------------------------
-       MEDIA QUERIES (Responsive)
-       ---------------------------- */
+    
+    /* ----------------------- */
+    /* MOBILE ADJUSTMENTS     */
+    /* ----------------------- */
     @media (max-width: 600px) {
-      .top-photo { width: 150px; }
+      #main-section h1 {
+        font-size: 18px;
+      }
+      .top-photo {
+        width: 150px;
+      }
       .btn {
         font-size: 16px;
         padding: 8px 16px;
       }
-      /* Ensure video remains at 250px */
       #valentine-video {
         width: 250px !important;
         max-width: 250px !important;
       }
-      /* On mobile, adjust screen division: top-half becomes 60vh, bottom-half 40vh */
+      /* For phone, keep the division 50vh each */
       #top-half {
-        height: 60vh;
+        height: 50vh;
       }
       #bottom-half {
-        height: 40vh;
+        height: 50vh;
       }
-      /* On mobile, reduce the size of the floating photos to avoid overlap */
+      /* On mobile, ensure the floating photos fill the top-half */
       .wire-image {
-        height: auto;
-        max-height: 150px;
+        height: 100%;
+        object-fit: cover;
         top: 0;
         transform: none;
       }
-      /* Adjust question container */
+      /* Make question container use full width */
       #question-container {
-        max-width: 250px;
-        padding: 8px;
-      }
-      #question-container h2 {
-        font-size: 14px;
+        max-width: 100%;
+        padding: 10px;
       }
       .meal-option {
         flex: 1 1 100%;
@@ -241,13 +252,15 @@
         font-size: 14px;
         padding: 6px;
       }
-      .meal-input { font-size: 14px; }
+      .meal-input {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- FIRST SCREEN: "Will you be my Valentine?" -->
+  <!-- MAIN SCREEN -->
   <div id="main-section">
     <img src="us.jpg" alt="Our Photo" class="top-photo">
     <h1>Will you be my Valentine? plewwz 😗🤗🥺</h1>
@@ -257,7 +270,7 @@
     </div>
   </div>
 
-  <!-- VIDEO SCREEN: Plays after "Yes" is clicked -->
+  <!-- VIDEO SCREEN -->
   <div id="video-screen">
     <div id="video-text">yaaayyyy 🤗🤗😍❤️</div>
     <video id="valentine-video" autoplay loop playsinline preload="auto">
@@ -267,7 +280,7 @@
     <button id="next-button" class="btn">Please click next my queen</button>
   </div>
 
-  <!-- SECOND SCREEN: Valentine Screen with photos on top & questions on bottom -->
+  <!-- QUESTION SCREEN: All meal sections shown on one screen -->
   <div id="valentine-screen">
     <div id="top-half">
       <div id="wire-photos">
@@ -284,9 +297,9 @@
     </div>
     <div id="bottom-half">
       <div id="question-container">
-        <!-- Breakfast Question -->
-        <div id="breakfast-question" class="question active">
-          <h2>Where do you want to go for breakfast on 9th morning?</h2>
+        <!-- Breakfast Section -->
+        <div class="meal-section" id="breakfast-question">
+          <h3>Breakfast</h3>
           <div class="options">
             <button class="meal-option" data-meal="Breakfast" data-place="Roys">Roys</button>
             <button class="meal-option" data-meal="Breakfast" data-place="Eye of the Tiger">Eye of the Tiger</button>
@@ -297,11 +310,11 @@
             <button class="meal-option" data-meal="Breakfast" data-place="Kyoto">Kyoto</button>
             <button class="meal-option" data-meal="Breakfast" data-place="Veetos">Veetos</button>
           </div>
-          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Breakfast">
+          <input type="text" class="meal-input" placeholder="Other?" data-meal="Breakfast">
         </div>
-        <!-- Lunch Question -->
-        <div id="lunch-question" class="question">
-          <h2>Where do you want to go for lunch on 9th?</h2>
+        <!-- Lunch Section -->
+        <div class="meal-section" id="lunch-question">
+          <h3>Lunch</h3>
           <div class="options">
             <button class="meal-option" data-meal="Lunch" data-place="Roys">Roys</button>
             <button class="meal-option" data-meal="Lunch" data-place="Eye of the Tiger">Eye of the Tiger</button>
@@ -312,11 +325,11 @@
             <button class="meal-option" data-meal="Lunch" data-place="Kyoto">Kyoto</button>
             <button class="meal-option" data-meal="Lunch" data-place="Veetos">Veetos</button>
           </div>
-          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Lunch">
+          <input type="text" class="meal-input" placeholder="Other?" data-meal="Lunch">
         </div>
-        <!-- Dinner Question -->
-        <div id="dinner-question" class="question">
-          <h2>Where do you want to go for dinner on 9th?</h2>
+        <!-- Dinner Section -->
+        <div class="meal-section" id="dinner-question">
+          <h3>Dinner</h3>
           <div class="options">
             <button class="meal-option" data-meal="Dinner" data-place="Roys">Roys</button>
             <button class="meal-option" data-meal="Dinner" data-place="Eye of the Tiger">Eye of the Tiger</button>
@@ -327,12 +340,14 @@
             <button class="meal-option" data-meal="Dinner" data-place="Kyoto">Kyoto</button>
             <button class="meal-option" data-meal="Dinner" data-place="Veetos">Veetos</button>
           </div>
-          <input type="text" class="meal-input" placeholder="Other? Type here and press Enter" data-meal="Dinner">
+          <input type="text" class="meal-input" placeholder="Other?" data-meal="Dinner">
         </div>
+        <!-- Submit Button -->
+        <button id="submit-button" class="btn">Submit</button>
       </div>
     </div>
   </div>
-
+  
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const yesButton = document.getElementById("yes-button");
@@ -341,9 +356,7 @@
       const videoScreen = document.getElementById("video-screen");
       const nextButton = document.getElementById("next-button");
       const valentineScreen = document.getElementById("valentine-screen");
-      const breakfastQuestion = document.getElementById("breakfast-question");
-      const lunchQuestion = document.getElementById("lunch-question");
-      const dinnerQuestion = document.getElementById("dinner-question");
+      const submitButton = document.getElementById("submit-button");
       
       // To store the user's meal selections
       let mealResponses = {
@@ -367,42 +380,29 @@
       yesButton.addEventListener("click", function () {
         mainSection.style.display = "none";
         videoScreen.style.display = "block";
-        // Attempt to play the video via JavaScript
         document.getElementById("valentine-video").play().catch(error => {
-          console.log("Video playback was prevented: ", error);
+          console.log("Video playback was prevented:", error);
         });
       });
       
-      // When "Next" is clicked on the video screen, hide video and show the question screen
+      // When "Next" is clicked on the video screen, hide it and show the question screen
       nextButton.addEventListener("click", function () {
         videoScreen.style.display = "none";
         valentineScreen.style.display = "flex";
       });
       
       // Handle meal option button selections
-      const mealOptions = document.querySelectorAll(".meal-option");
-      mealOptions.forEach(function (btn) {
+      const mealOptionButtons = document.querySelectorAll(".meal-option");
+      mealOptionButtons.forEach(function(btn) {
         btn.addEventListener("click", function () {
           const mealType = this.getAttribute("data-meal");
           const place = this.getAttribute("data-place");
           mealResponses[mealType] = place;
-          
-          if (mealType === "Breakfast") {
-            breakfastQuestion.classList.remove("active");
-            lunchQuestion.classList.add("active");
-          } else if (mealType === "Lunch") {
-            lunchQuestion.classList.remove("active");
-            dinnerQuestion.classList.add("active");
-          } else if (mealType === "Dinner") {
-            dinnerQuestion.classList.remove("active");
-            const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}`;
-            const whatsappURL = "https://api.whatsapp.com/send?phone=917062339465&text=" + encodeURIComponent(message);
-            window.open(whatsappURL, "_blank");
-          }
+          this.style.backgroundColor = "#ff4f4f"; // Visual feedback
         });
       });
       
-      // Handle custom meal input (when the user types and presses Enter)
+      // Handle custom meal input (on Enter, store the value)
       const mealInputs = document.querySelectorAll('.meal-input');
       mealInputs.forEach(function(input) {
         input.addEventListener("keydown", function(event) {
@@ -411,23 +411,22 @@
             const customPlace = this.value.trim();
             if (customPlace !== "") {
               mealResponses[mealType] = customPlace;
-              this.value = ""; // Clear the input field
-              
-              if (mealType === "Breakfast") {
-                breakfastQuestion.classList.remove("active");
-                lunchQuestion.classList.add("active");
-              } else if (mealType === "Lunch") {
-                lunchQuestion.classList.remAove("active");
-                dinnerQuestion.classList.add("active");
-              } else if (mealType === "Dinner") {
-                dinnerQuestion.classList.remove("active");
-                const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}`;
-                const whatsappURL = "https://api.whatsapp.com/send?phone=917062339465&text=" + encodeURIComponent(message);
-                window.open(whatsappURL, "_blank");
-              }
+              this.style.borderColor = "#ff4f4f"; // Visual feedback
+              this.value = "";
             }
           }
         });
+      });
+      
+      // When the Submit button is clicked, ensure all meals are selected then open WhatsApp
+      submitButton.addEventListener("click", function () {
+        if (!mealResponses.Breakfast || !mealResponses.Lunch || !mealResponses.Dinner) {
+          alert("Please select or enter an option for all meals.");
+        } else {
+          const message = `Breakfast: ${mealResponses.Breakfast}, Lunch: ${mealResponses.Lunch}, Dinner: ${mealResponses.Dinner}`;
+          const whatsappURL = "https://api.whatsapp.com/send?phone=917062339465&text=" + encodeURIComponent(message);
+          window.open(whatsappURL, "_blank");
+        }
       });
     });
   </script>
