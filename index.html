@@ -86,20 +86,18 @@
     /* ----------------------- */
     /* QUESTION SCREENS        */
     /* Each question screen fills the viewport and is divided vertically into:
-         - Top-half: Floating photos (covering 50% of the viewport)
-         - Bottom-half: The meal question and options
+         - Top-half: Floating photos (50% of the viewport)
+         - Bottom-half: Meal question and options (50% of the viewport)
     */
     .question-screen {
-      display: none;
+      display: none; /* Hide by default */
       height: 100vh;
       width: 100vw;
       background: #000;
       color: #fff;
-      display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    /* Top-half: Floating Photos */
     .top-half {
       position: relative;
       height: 50vh;
@@ -139,7 +137,6 @@
     .wire-image:nth-child(8) { animation-delay: 21s; }
     .wire-image:nth-child(9) { animation-delay: 24s; }
     
-    /* Bottom-half: Question Container */
     .bottom-half {
       height: 50vh;
       background: #fff;
@@ -312,7 +309,7 @@
   
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Screen elements
+      // Get screen elements
       const mainSection = document.getElementById("main-section");
       const videoScreen = document.getElementById("video-screen");
       const breakfastScreen = document.getElementById("breakfast-screen");
@@ -323,14 +320,14 @@
       const noButton = document.getElementById("no-button");
       const nextButton = document.getElementById("next-button");
       
-      // Meal responses object
+      // Object to store meal selections
       let mealResponses = {
         Breakfast: "",
         Lunch: "",
         Dinner: ""
       };
       
-      // Function to move the "No" button randomly on hover/touch
+      // Function to move the "No" button randomly
       function moveButton() {
         const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
         const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
@@ -341,7 +338,7 @@
       noButton.addEventListener("mouseover", moveButton);
       noButton.addEventListener("touchstart", moveButton);
       
-      // When "Yes" is clicked, hide the main section and show the video screen
+      // Main screen: "Yes" button click
       yesButton.addEventListener("click", function () {
         mainSection.style.display = "none";
         videoScreen.style.display = "block";
@@ -350,7 +347,7 @@
         });
       });
       
-      // When "Next" is clicked on the video screen, hide it and show the breakfast screen
+      // Video screen: "Next" button click shows Breakfast screen
       nextButton.addEventListener("click", function () {
         videoScreen.style.display = "none";
         breakfastScreen.style.display = "flex";
@@ -396,7 +393,7 @@
         });
       }
       
-      // Set up each question screen separately
+      // Set up each question screen sequentially
       setupQuestionScreen(breakfastScreen, "Breakfast", lunchScreen);
       setupQuestionScreen(lunchScreen, "Lunch", dinnerScreen);
       setupQuestionScreen(dinnerScreen, "Dinner", null);
