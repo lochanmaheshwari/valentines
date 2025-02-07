@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Will You Be My Valentine?</title>
   <style>
-    /* Global Reset & Base Styles */
+    /* Global Reset & Box-Sizing */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      overflow-x: hidden;
+    }
     html, body {
       height: 100%;
       margin: 0;
@@ -66,7 +72,7 @@
       color: #d6336c;
       margin-bottom: 20px;
     }
-    /* Video fixed to 250px width; note that autoplay with sound might be blocked by some browsers */
+    /* Video fixed to 250px width */
     #valentine-video {
       width: 250px;
       max-width: 250px;
@@ -117,10 +123,10 @@
     }
     .wire-image {
       position: absolute;
-      /* Make each image fill the container's height */
+      /* On desktop, let the image fill the container’s height */
       height: 100%;
       width: auto;
-      object-fit: contain;  /* Ensure full image is visible */
+      object-fit: contain;
       border-radius: 10px;
       animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       opacity: 0;
@@ -141,7 +147,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-    }1
+    }
     /* Reduced Question Container */
     #question-container {
       background: rgba(255, 255, 255, 0.2);
@@ -207,16 +213,17 @@
         width: 250px !important;
         max-width: 250px !important;
       }
-      /* On mobile, adjust the screen division: top-half becomes 60vh, bottom-half 40vh */
+      /* On mobile, adjust screen division: top-half becomes 60vh, bottom-half 40vh */
       #top-half {
         height: 60vh;
       }
       #bottom-half {
         height: 40vh;
       }
-      /* On mobile, make moving photos fill the top-half completely */
+      /* On mobile, reduce the size of the floating photos to avoid overlap */
       .wire-image {
-        height: 100%;
+        height: auto;
+        max-height: 150px;
         top: 0;
         transform: none;
       }
@@ -360,7 +367,7 @@
       yesButton.addEventListener("click", function () {
         mainSection.style.display = "none";
         videoScreen.style.display = "block";
-        // Attempt to play the video via JavaScript (some browsers allow play() after a user click)
+        // Attempt to play the video via JavaScript
         document.getElementById("valentine-video").play().catch(error => {
           console.log("Video playback was prevented: ", error);
         });
@@ -394,7 +401,7 @@
           }
         });
       });
-
+      
       // Handle custom meal input (when the user types and presses Enter)
       const mealInputs = document.querySelectorAll('.meal-input');
       mealInputs.forEach(function(input) {
@@ -410,7 +417,7 @@
                 breakfastQuestion.classList.remove("active");
                 lunchQuestion.classList.add("active");
               } else if (mealType === "Lunch") {
-                lunchQuestion.classList.remove("active");
+                lunchQuestion.classList.remAove("active");
                 dinnerQuestion.classList.add("active");
               } else if (mealType === "Dinner") {
                 dinnerQuestion.classList.remove("active");
