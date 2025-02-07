@@ -50,7 +50,6 @@
     #no-button {
       position: relative;
     }
-    
     /* -------------------------------------------------------------------------
        VIDEO SCREEN: Plays video after "Yes" is clicked
        ------------------------------------------------------------------------- */
@@ -67,18 +66,16 @@
       color: #d6336c;
       margin-bottom: 20px;
     }
-    /* Video now fixed to 250px width and preloaded */
+    /* Video fixed to 250px width; note that autoplay with sound might be blocked by some browsers */
     #valentine-video {
       width: 250px;
       max-width: 250px;
       border-radius: 10px;
       display: block;
       margin: 20px auto;
-      preload: auto;
     }
-    
     /* -------------------------------------------------------------------------
-       SECOND SCREEN: Valentine Screen with moving photos & meal questions
+       SECOND SCREEN: Valentine Screen with photos on top & meal questions on bottom
        ------------------------------------------------------------------------- */
     #valentine-screen {
       display: none;
@@ -89,7 +86,7 @@
     /* Top half for photos */
     #top-half {
       position: relative;
-      height: 50vh; /* Desktop: top half is 50% of viewport height */
+      height: 50vh;  /* Desktop: top half is 50% of viewport height */
       overflow: hidden;
     }
     /* Floating Photos Container */
@@ -120,12 +117,10 @@
     }
     .wire-image {
       position: absolute;
-      /* Desktop: Center vertically in the top half */
-      top: 50%;
-      transform: translateY(-50%);
-      height: 250px;
+      /* Make each image fill the container's height */
+      height: 100%;
       width: auto;
-      object-fit: cover;
+      object-fit: contain;  /* Ensure full image is visible */
       border-radius: 10px;
       animation: floatStraight 15s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       opacity: 0;
@@ -140,7 +135,6 @@
     .wire-image:nth-child(7) { animation-delay: 7.5s; }
     .wire-image:nth-child(8) { animation-delay: 9s; }
     .wire-image:nth-child(9) { animation-delay: 10.5s; }
-    
     /* Bottom half for questions */
     #bottom-half {
       height: 50vh;
@@ -199,7 +193,6 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-    
     /* ----------------------------
        MEDIA QUERIES (Responsive)
        ---------------------------- */
@@ -214,14 +207,14 @@
         width: 250px !important;
         max-width: 250px !important;
       }
-      /* On mobile, make top half bigger (60vh) and bottom half smaller (40vh) */
+      /* On mobile, adjust the screen division: top-half becomes 60vh, bottom-half 40vh */
       #top-half {
         height: 60vh;
       }
       #bottom-half {
         height: 40vh;
       }
-      /* On mobile, make moving photos fill the container */
+      /* On mobile, make moving photos fill the top-half completely */
       .wire-image {
         height: 100%;
         top: 0;
@@ -367,6 +360,10 @@
       yesButton.addEventListener("click", function () {
         mainSection.style.display = "none";
         videoScreen.style.display = "block";
+        // Attempt to play the video via JavaScript (some browsers allow play() after a user click)
+        document.getElementById("valentine-video").play().catch(error => {
+          console.log("Video playback was prevented: ", error);
+        });
       });
       
       // When "Next" is clicked on the video screen, hide video and show the question screen
@@ -429,4 +426,3 @@
   </script>
 </body>
 </html>
-z
